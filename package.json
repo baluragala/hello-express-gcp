@@ -1,25 +1,22 @@
 {
-  "name": "hello-express-gcp",
+  "name": "express-mysql-todo",
   "version": "1.0.0",
-  "description": "Simple Express API for GCP CI/CD demonstration",
-  "main": "index.js",
+  "description": "A simple Express.js application with MySQL support for todo data.",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest"
+    "start": "node index.js"
   },
   "keywords": [
     "express",
-    "gcp",
-    "cloud-run",
-    "cloud-build"
+    "mysql",
+    "todo",
+    "api"
   ],
-  "author": "",
+  "author": "Your Name",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "jest": "^27.0.0",
-    "supertest": "^6.1.6"
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mysql2": "^3.9.7"
   }
-} 
+}

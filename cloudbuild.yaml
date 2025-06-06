@@ -1,34 +1,39 @@
 steps:
-# Install dependencies and run tests
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['install']
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['test']
-  env:
-  - 'CI=true' # To ensure Jest runs in CI mode if it has specific CI behavior
+  # Install dependencies and run tests
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["install"]
+    env:
+      - "CI=true" # To ensure Jest runs in CI mode if it has specific CI behavior
 
-# Build the container image
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/upgradlabs-1746954845644/hello-express-service:$COMMIT_SHA', '.']
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ['build', '-t', 'gcr.io/my-second-project-458705/express-mysql-todo:latest', '.'] # assuming COMMIT_SHA is a substitution
+      
 
-# Push the container image to Google Container Registry (GCR)
-# You can also use Artifact Registry: asia-south1-docker.pkg.dev/upgradlabs-1746954845644/[REPOSITORY_NAME]/hello-express-service:$COMMIT_SHA
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/upgradlabs-1746954845644/hello-express-service:$COMMIT_SHA']
+  # Push the container image to Google Container Registry (GCR)
+  # You can also use Artifact Registry: asia-south1-docker.pkg.dev/upgradlabs-1746954845644/[REPOSITORY_NAME]/hello-express-service:$COMMIT_SHA
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["push", "gcr.io/my-second-project-458705/express-mysql-todo:latest"]
 
-# Deploy container image to Cloud Run
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args: [
-    'run', 'deploy', 'hello-express-service',
-    '--image', 'gcr.io/upgradlabs-1746954845644/hello-express-service:$COMMIT_SHA',
-    '--region', 'asia-south1',
-    '--platform', 'managed', # or 'gke', 'anthos'
-    '--allow-unauthenticated' # Allows public access, remove if not needed
-  ]
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args: [
+        "run",
+        "deploy",
+        "express-mysql-todo",
+        "--image",
+        "gcr.io/my-second-project-458705/express-mysql-todo:latest",
+        "--region",
+        "asia-south1",
+        "--platform",
+        "managed", # or 'gke', 'anthos'
+        "--allow-unauthenticated", # Allows public access, remove if not needed
+      ]
 
 images:
-- 'gcr.io/upgradlabs-1746954845644/hello-express-service:$COMMIT_SHA'
+  - "gcr.io/upgradlabs-1746954845644/express-mysql-todo:latest"
 
 options:
-  logging: CLOUD_LOGGING_ONLY 
+  logging: CLOUD_LOGGING_ONLY
